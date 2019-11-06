@@ -1,23 +1,42 @@
 import React, { Component } from 'react';
 import './app.css';
-import ReactImage from './react.png';
+import { Button, Card, CardTitle, CardText } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class App extends Component {
   state = { username: null };
 
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
+  clickRecordButton() {
+    fetch('/api/startRecord')
+  }
+
+  clickStopButton() {
+    fetch('/api/stopRecord')
   }
 
   render() {
-    const { username } = this.state;
     return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
-      </div>
+      <React.Fragment>
+        <div className="container" style={{ marginTop:'10rem' }} >
+          <div className="text-center">
+            <h1 className="recordText">동작을 녹화할 수 있는 화면입니다.</h1>
+          </div>
+          <div class="row">
+            <div className="col-4"></div>
+            <div className="col-4">
+              <div className="text-center">
+                <Card body inverse color="primary" className="mb-5">
+                  <CardTitle>키넥트 졸라맨이 들어갈 자리</CardTitle>
+                  <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+                </Card>
+                <Button color="danger" className="mr-3" onClick={this.clickRecordButton}>녹화하기</Button>
+                <Button color="primary" onClick={this.clickStopButton}>녹화 종료하기</Button>
+              </div>           
+            </div>   
+            <div className="col-4"></div>           
+          </div>            
+        </div>
+      </React.Fragment>
     );
   }
 }
