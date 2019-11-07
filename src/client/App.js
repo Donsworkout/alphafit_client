@@ -52,7 +52,7 @@ export default class App extends Component {
     let self = this
 
     self.socket = io(serverAddress);
-    
+
     self.socket.on('bodyFrame', bodyFrame => {
       let ctx = self.display.current.getContext('2d');
       ctx.clearRect(0, 0, self.display.current.width, self.display.current.height);
@@ -85,18 +85,14 @@ export default class App extends Component {
       <React.Fragment>
         <div className="container" style={{ marginTop:'10rem' }} >
           <div className="text-center">
-            <h1 className="recordText">동작을 녹화할 수 있는 화면입니다.</h1>
+            <h1 className="recordText">동작 녹화하기</h1>
           </div>
-          <div class="row">
-            <div className="col-4"></div>
-            <div className="col-4">
-              <div className="text-center">
-              <canvas className="display" width="512" height="424" ref={this.display}></canvas>
+          <div className="text-center">
+            <canvas className="display" width="512" height="424" ref={this.display}></canvas>
+            <div>
               <Button color="danger" className="mr-3" onClick={this.clickRecordButton}>녹화하기</Button>
-              </div>           
-            </div>   
-            <div className="col-4"></div>           
-          </div>            
+            </div>
+          </div>                 
         </div>
       </React.Fragment>
     );

@@ -10,3 +10,7 @@ body {
 .recordText {
   margin-bottom:30px;
 }
+
+.display{
+  border: 1px solid red;
+}

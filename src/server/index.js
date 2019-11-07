@@ -11,6 +11,10 @@ const io = require('socket.io').listen(server);
 
 app.use(express.static('dist'));
 
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
 if(kinect.open()) {
     console.log("kinect ready to operate");
 
@@ -18,7 +22,7 @@ if(kinect.open()) {
     kinect.on('bodyFrame', function(bodyFrame){
         io.sockets.emit('bodyFrame', bodyFrame);
 
-         // 녹화 버튼 클릭 (20초간 스쿼트 동작 녹화)
+        // 녹화 버튼 클릭 (20초간 스쿼트 동작 녹화)
         app.get('/api/startRecord', (req, res) =>  {
             for(var i = 0;  i < bodyFrame.bodies.length; i++) {
                 if(bodyFrame.bodies[i].tracked) {
@@ -34,13 +38,16 @@ if(kinect.open()) {
                     recordData += "\n"
                 }
             }
-            //close the kinect after 5 seconds
+
+            // 20초 후 녹화 종료
             setTimeout(function(){
+                recordData = recordData.substring(0, recordData.length - 1);
+                console.log(recordData);
+                /*
                 kinect.removeAllListeners('bodyFrame');
                 kinect.close();
                 console.log("Kinect Closed");
-                recordData = recordData.substring(0, recordData.length - 1);
-
+                               
                 axios.post('http://172.30.1.56:5000/analyze_raw', {
                     data: recordData
                 })
@@ -50,7 +57,8 @@ if(kinect.open()) {
                 .catch((error) => {
                     console.error(error)
                 })
-                
+                */
+
             }, 20000);            
         });
 	});
