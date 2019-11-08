@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './app.css';
-import { Button, Card, CardTitle, CardText } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-materialize';
+import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client'
 
 const serverAddress = "http://localhost:3000"
@@ -78,19 +78,26 @@ export default class App extends Component {
 
   clickRecordButton() {
     fetch('/api/startRecord')
+    .then(response => { 
+      console.log(response.data);
+    })
   }
 
   render() {
     return (
       <React.Fragment>
-        <div className="container" style={{ marginTop:'10rem' }} >
-          <div className="text-center">
-            <h1 className="recordText">동작 녹화하기</h1>
+        <div className="container" style={{ marginTop:'5rem' }}>
+          <div className="center-align">
+            <h3 className="recordText">AlphaFit</h3>
+            <p className="recordSub">The next personal trainer</p>
           </div>
-          <div className="text-center">
+          <div className="center-align">
             <canvas className="display" width="512" height="424" ref={this.display}></canvas>
             <div>
-              <Button color="danger" className="mr-3" onClick={this.clickRecordButton}>녹화하기</Button>
+              <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
+                <i className="material-icons left">fiber_manual_record</i>
+                Start Record
+              </Button>
             </div>
           </div>                 
         </div>
