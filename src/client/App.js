@@ -20,9 +20,9 @@ export default class App extends Component {
       HANDLASSOCOLOR: "blue",
       resultData: {
         reps: 0,
-        majorProblems: '분석되지 않았습니다',
-        minorProblems: '분석되지 않았습니다',
-        strength: '분석되지 않았습니다'
+        majorProblems: ['분석되지 않았습니다'],
+        minorProblems: ['분석되지 않았습니다'],
+        strengths: ['분석되지 않았습니다']
       },
       recordState: 0,
     }
@@ -88,18 +88,18 @@ export default class App extends Component {
     self.setState({recordState: 1});
     setTimeout(function(){
       self.setState({recordState: 2})
-    }, 20000);
+    }, 2000);
 
-    fetch('/api/startRecord')
+    fetch('/api/test')
     .then((response) => { return response.json(); })
     .then((data) => {
       const items = data;
       self.setState({
         resultData: {
           reps: items["reps"],
-          majorProblems: items["majorProblems"]["kneesOverToes"],
-          minorProblems: items["minorProblems"]["stance"],
-          strength: items["strength"]          
+          majorProblems: items["majorProblems"],
+          minorProblems: items["minorProblems"],
+          strengths: items["strengths"]          
         },
         recordState: 3
       });
@@ -111,7 +111,7 @@ export default class App extends Component {
     if (this.state.recordState === 0) {
       recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
                     <i className="material-icons left">fiber_manual_record</i>
-                    녹화하기 
+                    Start Record
                   </Button>
       content = <div className="readtSpace">
                   <p className="evalText">
@@ -141,7 +141,7 @@ export default class App extends Component {
     } else {
       recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
                     <i className="material-icons left">fiber_manual_record</i>
-                    녹화하기 
+                    Start Record
                   </Button>
       content = <div className="feedbackSpace">
                   <Feedback feedback={this.state.resultData}/>
@@ -151,7 +151,7 @@ export default class App extends Component {
     return (
       <React.Fragment>
         <div className="app-container">
-          <div className="row" style={{ marginTop:'5rem' }}>
+          <div className="row" style={{ marginTop:'7.5rem' }}>
             <div className="col s6">
               <div className="center-align">
                 <canvas className="display" width="512" height="424" ref={this.display}></canvas>

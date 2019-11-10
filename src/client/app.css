@@ -5,6 +5,10 @@
   src: url(https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
 }
 
+#root{
+  min-height:90vh;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -94,6 +98,16 @@ body {
 .evalText{
   letter-spacing: 0.08em;
   font-weight: 200;
+}
+
+.repAnalyzed{
+  letter-spacing: 0.04em;
+  font-weight: 200;
+}
+
+.subHeader{
+  font-size:18px;
+  font-weight: 200;  
 }
 
 .loader,

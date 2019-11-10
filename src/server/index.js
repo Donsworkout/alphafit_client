@@ -34,9 +34,7 @@ if(kinect.open()) {
         kinect.on('bodyFrame', function(bodyFrame){
             for(var i = 0;  i < bodyFrame.bodies.length; i++) {
                 if(bodyFrame.bodies[i].tracked) {
-                    console.log("phase 3");
                     for(var j = 0;  j < bodyFrame.bodies[i].joints.length; j++) {
-                        console.log("phase 4");
                         recordData += bodyFrame.bodies[i].joints[j]["depthX"] * 512
                         recordData += ","
                         recordData += bodyFrame.bodies[i].joints[j]["depthY"] * 424
@@ -52,13 +50,13 @@ if(kinect.open()) {
             // 20초 후 녹화 종료
             setTimeout(function(){
                 recordData = recordData.substring(0, recordData.length - 1);
-
-                axios.post('http://172.30.1.60:5000/analyze_raw', {
+                axios.post('http://172.30.1.58:5000/analyze_raw', {
                     data: recordData
                 })
                 .then((res) => {
                     result = res.data;
                     result["success"] = 1;
+                    console.log(result)
                     res.json(result);
                 })
                 .catch((error) => {
@@ -73,20 +71,15 @@ if(kinect.open()) {
 
     app.get('/api/test', (req, res) =>  {
         console.log("clicked")
-        sleep(20000);
-        sleep(5000);
+        sleep(2000);
+        sleep(2000);
         let result = {};
 
         result = {
             reps: "10",
-            majorProblems: {
-                kneesOverToes: "keep angle",
-                stance: "more wide"
-            },
-            strength: "lowerBack",
-            minorProblems: {
-                face: "wide face"
-            }
+            majorProblems: ["knees_over_toes", "back_hip_angle"],
+            minorProblems: ["squat_depth"],
+            strengths: ["bend_hips_knees"]
         };
         result["success"] = 1;
 
