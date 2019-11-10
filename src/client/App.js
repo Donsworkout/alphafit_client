@@ -83,26 +83,14 @@ export default class App extends Component {
     });
   };
 
-  sleep = (delay) => {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
-  }
-
-  clickRecordButton() {
-    fetch('/api/startRecord')
-    .then(response => { 
-      console.log(response.data);
-    })
-  }
-
-  clickTestButton = () => {
+  clickRecordButton = () => {
     self = this;
     self.setState({recordState: 1});
     setTimeout(function(){
       self.setState({recordState: 2})
     }, 20000);
 
-    fetch('/api/test')
+    fetch('/api/startRecord')
     .then((response) => { return response.json(); })
     .then((data) => {
       const items = data;
@@ -121,11 +109,11 @@ export default class App extends Component {
   render() {
     let recordBtn, content;
     if (this.state.recordState === 0) {
-      recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickTestButton}>
+      recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
                     <i className="material-icons left">fiber_manual_record</i>
                     녹화하기 
                   </Button>
-      content = <div className="feedbackSpace">
+      content = <div className="readtSpace">
                   <p className="evalText">
                     왼쪽 하단의 녹화하기 버튼을 클릭하여 주세요
                   </p>
@@ -151,7 +139,7 @@ export default class App extends Component {
                   </p>
                 </div>
     } else {
-      recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickTestButton}>
+      recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
                     <i className="material-icons left">fiber_manual_record</i>
                     녹화하기 
                   </Button>

@@ -53,22 +53,19 @@ if(kinect.open()) {
             setTimeout(function(){
                 recordData = recordData.substring(0, recordData.length - 1);
 
-                /*
-                kinect.removeAllListeners('bodyFrame');
-                kinect.close();
-                console.log("Kinect Closed");
-                */
-
                 axios.post('http://172.30.1.60:5000/analyze_raw', {
                     data: recordData
                 })
                 .then((res) => {
-                    console.log(res.data)
-                    res.send(res.data)
+                    result = res.data;
+                    result["success"] = 1;
+                    res.json(result);
                 })
                 .catch((error) => {
-                    console.error(error)
-                    res.send("Evaluation Failed")
+                    console.log("EVAL FAILED");
+                    result = {};
+                    result["success"] = 0;
+                    res.json(result);
                 })               
             }, 20000); 
         });  
