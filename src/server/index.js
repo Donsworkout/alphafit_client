@@ -14,6 +14,11 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+function sleep(delay) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + delay);
+}
+
 if(kinect.open()) {
     console.log("kinect ready to operate");
 
@@ -71,14 +76,12 @@ if(kinect.open()) {
 
     app.get('/api/test', (req, res) =>  {
         console.log("clicked")
+        sleep(20000);
+        sleep(5000);
         let result = {};
 
         result = {
             reps: "10",
-            majorProblems: {
-                kneesOverToes: "keep angle",
-                stance: "more wide"
-            },
             majorProblems: {
                 kneesOverToes: "keep angle",
                 stance: "more wide"

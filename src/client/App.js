@@ -3,7 +3,7 @@ import './app.css';
 import { Button } from 'react-materialize';
 import "materialize-css/dist/css/materialize.min.css";
 import io from 'socket.io-client'
-
+import Feedback from './Feedback'
 const serverAddress = "http://localhost:3000"
 
 export default class App extends Component {
@@ -17,7 +17,14 @@ export default class App extends Component {
       HANDSIZE: 20,
       HANDCLOSEDCOLOR: "red",
       HANDOPENCOLOR:"green",
-      HANDLASSOCOLOR: "blue"    
+      HANDLASSOCOLOR: "blue",
+      resultData: {
+        reps: 0,
+        majorProblems: '분석되지 않았습니다',
+        minorProblems: '분석되지 않았습니다',
+        strength: '분석되지 않았습니다'
+      },
+      recordState: 0,
     }
   }
 
@@ -76,6 +83,11 @@ export default class App extends Component {
     });
   };
 
+  sleep = (delay) => {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + delay);
+  }
+
   clickRecordButton() {
     fetch('/api/startRecord')
     .then(response => { 
@@ -83,36 +95,93 @@ export default class App extends Component {
     })
   }
 
-  clickTestButton() {
+  clickTestButton = () => {
+    self = this;
+    self.setState({recordState: 1});
+    setTimeout(function(){
+      self.setState({recordState: 2})
+    }, 20000);
+
     fetch('/api/test')
-    .then(function(response){ return response.json(); })
-    .then(function(data) {
-        const items = data;
-        console.log(items)
-    })
+    .then((response) => { return response.json(); })
+    .then((data) => {
+      const items = data;
+      self.setState({
+        resultData: {
+          reps: items["reps"],
+          majorProblems: items["majorProblems"]["kneesOverToes"],
+          minorProblems: items["minorProblems"]["stance"],
+          strength: items["strength"]          
+        },
+        recordState: 3
+      });
+    });
   }
 
   render() {
+    let recordBtn, content;
+    if (this.state.recordState === 0) {
+      recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickTestButton}>
+                    <i className="material-icons left">fiber_manual_record</i>
+                    녹화하기 
+                  </Button>
+      content = <div className="feedbackSpace">
+                  <p className="evalText">
+                    왼쪽 하단의 녹화하기 버튼을 클릭하여 주세요
+                  </p>
+                </div>
+    } else if (this.state.recordState === 1) {
+      recordBtn = null
+      content = <div className="loaderSpace">
+                <div class="spinner">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+                </div>
+                  <p className="evalText">
+                    동작을 녹화하는 중입니다.<br/>
+                    스쿼트를 계속 수행해 주세요
+                  </p>
+                </div>
+    } else if (this.state.recordState === 2) {
+      recordBtn = null
+      content = <div className="loaderSpace">
+                  <div class="loader">Loading...</div>
+                  <p className="evalText">
+                    녹화된 모션 데이터를 평가하고 있습니다
+                  </p>
+                </div>
+    } else {
+      recordBtn = <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickTestButton}>
+                    <i className="material-icons left">fiber_manual_record</i>
+                    녹화하기 
+                  </Button>
+      content = <div className="feedbackSpace">
+                  <Feedback feedback={this.state.resultData}/>
+                </div>      
+    }
+
     return (
       <React.Fragment>
-        <div className="container" style={{ marginTop:'5rem' }}>
-          <div className="center-align">
-            <h3 className="recordText">AlphaFit</h3>
-            <p className="recordSub">The next personal trainer</p>
-          </div>
-          <div className="center-align">
-            <canvas className="display" width="512" height="424" ref={this.display}></canvas>
-            <div>
-              <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
-                <i className="material-icons left">fiber_manual_record</i>
-                Start Record
-              </Button>
-              <Button className="waves-effect waves-light btn recordBtn green" onClick={this.clickTestButton}>
-                <i className="material-icons left">fiber_manual_record</i>
-                Test Record
-              </Button>
+        <div className="app-container">
+          <div className="row" style={{ marginTop:'5rem' }}>
+            <div className="col s6">
+              <div className="center-align">
+                <canvas className="display" width="512" height="424" ref={this.display}></canvas>
+                <div>
+                  {recordBtn}
+                </div>
+              </div>  
             </div>
-          </div>                 
+            <div className="col s6">
+              <div className="card black darken-1 feedbackCard">
+                <div className="card-content white-text">
+                  <span className="card-title">AI FeedBack</span>
+                  <br/>
+                  {content}
+                </div>
+              </div>
+            </div>               
+          </div>
         </div>
       </React.Fragment>
     );
