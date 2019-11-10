@@ -83,6 +83,15 @@ export default class App extends Component {
     })
   }
 
+  clickTestButton() {
+    fetch('/api/test')
+    .then(function(response){ return response.json(); })
+    .then(function(data) {
+        const items = data;
+        console.log(items)
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -97,6 +106,10 @@ export default class App extends Component {
               <Button className="waves-effect waves-light btn recordBtn red" onClick={this.clickRecordButton}>
                 <i className="material-icons left">fiber_manual_record</i>
                 Start Record
+              </Button>
+              <Button className="waves-effect waves-light btn recordBtn green" onClick={this.clickTestButton}>
+                <i className="material-icons left">fiber_manual_record</i>
+                Test Record
               </Button>
             </div>
           </div>                 

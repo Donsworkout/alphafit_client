@@ -47,25 +47,50 @@ if(kinect.open()) {
             // 20초 후 녹화 종료
             setTimeout(function(){
                 recordData = recordData.substring(0, recordData.length - 1);
-                console.log(recordData);
 
                 /*
                 kinect.removeAllListeners('bodyFrame');
                 kinect.close();
                 console.log("Kinect Closed");
                 */
-               
-                axios.post('http://172.30.1.17:5000/analyze_raw', {
+
+                axios.post('http://172.30.1.60:5000/analyze_raw', {
                     data: recordData
                 })
                 .then((res) => {
                     console.log(res.data)
+                    res.send(res.data)
                 })
                 .catch((error) => {
                     console.error(error)
+                    res.send("Evaluation Failed")
                 })               
             }, 20000); 
         });  
+    });
+
+    app.get('/api/test', (req, res) =>  {
+        console.log("clicked")
+        let result = {};
+
+        result = {
+            reps: "10",
+            majorProblems: {
+                kneesOverToes: "keep angle",
+                stance: "more wide"
+            },
+            majorProblems: {
+                kneesOverToes: "keep angle",
+                stance: "more wide"
+            },
+            strength: "lowerBack",
+            minorProblems: {
+                face: "wide face"
+            }
+        };
+        result["success"] = 1;
+
+        res.json(result);
     });
 
     kinect.openBodyReader();
