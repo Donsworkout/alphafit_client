@@ -45,28 +45,35 @@ if(kinect.open()) {
                     recordData = recordData.substring(0, recordData.length - 1);	
                     recordData += "\n"
                 }
-            }
-
-            // 20초 후 녹화 종료
-            setTimeout(function(){
-                recordData = recordData.substring(0, recordData.length - 1);
-                axios.post('http://172.30.1.58:5000/analyze_raw', {
-                    data: recordData
-                })
-                .then((res) => {
-                    result = res.data;
-                    result["success"] = 1;
-                    console.log(result)
-                    res.json(result);
-                })
-                .catch((error) => {
-                    console.log("EVAL FAILED");
-                    result = {};
-                    result["success"] = 0;
-                    res.json(result);
-                })               
-            }, 20000); 
+            } 
         });  
+
+        // 20초 후 녹화 종료
+        setTimeout(function(){
+            recordData = recordData.substring(0, recordData.length - 1);
+            axios.post('http://172.30.1.15:5000/analyze_raw', {
+                data: recordData
+            }, {timeout: 20000})
+            .then((response) => {
+                resData = response.data
+                let result = {};
+                result = {
+                    reps: resData.reps,
+                    majorProblems: resData.majorProblems,
+                    minorProblems: resData.minorProblems,
+                    strengths:  resData.strengths,
+                    success: 1
+                };
+                res.json(result);
+            })
+            .catch((error) => {
+                console.log("EVAL FAILED");
+                result = {};
+                result["success"] = 0;
+                res.json(result);
+            })               
+        }, 20000);
+
     });
 
     app.get('/api/test', (req, res) =>  {

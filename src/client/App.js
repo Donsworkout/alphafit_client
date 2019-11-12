@@ -88,21 +88,33 @@ export default class App extends Component {
     self.setState({recordState: 1});
     setTimeout(function(){
       self.setState({recordState: 2})
-    }, 2000);
+    }, 20000);
 
-    fetch('/api/test')
+    fetch('/api/startRecord')
     .then((response) => { return response.json(); })
     .then((data) => {
       const items = data;
-      self.setState({
-        resultData: {
-          reps: items["reps"],
-          majorProblems: items["majorProblems"],
-          minorProblems: items["minorProblems"],
-          strengths: items["strengths"]          
-        },
-        recordState: 3
-      });
+      if (items["success"] == 1) {
+        self.setState({
+          resultData: {
+            reps: items["reps"],
+            majorProblems: items["majorProblems"],
+            minorProblems: items["minorProblems"],
+            strengths: items["strengths"]          
+          },
+          recordState: 3
+        });
+      } else {
+        self.setState({
+          resultData: {
+            reps: 0,
+            majorProblems: ["분석 실패"],
+            minorProblems: ["분석 실패"],
+            strengths: ["분석 실패"]         
+          },
+          recordState: 3
+        });
+      }
     });
   }
 
