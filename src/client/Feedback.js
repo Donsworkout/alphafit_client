@@ -111,12 +111,12 @@ class Feedback extends Component {
           </div>
         </div>
         <div>
-          <div className="subHeader">Positive Feedback</div> 
+          <div className="subHeader">Negative Feedback</div> 
           <ul>
             {majorAdvice}
             {minorAdvice}
           </ul>         
-          <div className="subHeader">Negative Feedback</div> 
+          <div className="subHeader">Positive Feedback</div> 
           <ul>
             {strengthGood}
           </ul>
