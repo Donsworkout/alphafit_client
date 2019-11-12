@@ -51,7 +51,7 @@ if(kinect.open()) {
         // 20초 후 녹화 종료
         setTimeout(function(){
             recordData = recordData.substring(0, recordData.length - 1);
-            axios.post('http://172.30.1.15:5000/analyze_raw', {
+            axios.post('http://localhost:5000/analyze_raw', {
                 data: recordData
             }, {timeout: 20000})
             .then((response) => {
