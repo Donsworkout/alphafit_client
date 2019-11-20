@@ -163,7 +163,7 @@ export default class App extends Component {
     return (
       <React.Fragment>
         <div className="app-container">
-          <div className="row" style={{ marginTop:'7.5rem' }}>
+          <div className="row" style={{ marginTop:'9vh'}}>
             <div className="col s6">
               <div className="center-align">
                 <canvas className="display" width="512" height="424" ref={this.display}></canvas>
