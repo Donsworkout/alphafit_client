@@ -34,7 +34,7 @@ class Feedback extends Component {
       case "squat_depth":
         return "스쿼트 깊이가 부족합니다. 조금 더 내려가 주세요"
       case "knees_over_toes":
-        return "발끝 밖으로 무릎이 과하게 나가는 경향이 있습니다, 신경 써 주세요"
+        return "발끝 밖으로 무릎이 나가는 경향이 있습니다, 신경 써 주세요"
       case "back_hip_angle":
         return "상체 각도에 문제가 있습니다. 상체 각을 적절하게 유지하여 주세요"
     }  
@@ -104,7 +104,7 @@ class Feedback extends Component {
             </ul>
           </div>
           <div className="col s4">
-            <div className="subHeader">Strengths</div>
+            <div className="subHeader goldFont">Strengths</div>
             <ul>
               {strengthElems}
             </ul>

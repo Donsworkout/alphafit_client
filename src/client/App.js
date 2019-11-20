@@ -127,7 +127,13 @@ export default class App extends Component {
                   </Button>
       content = <div className="readtSpace">
                   <p className="evalText">
-                    왼쪽 하단의 녹화하기 버튼을 클릭하여 주세요
+                    녹화 버튼을 누르면 즉시 녹화가 시작됩니다.
+                  </p>
+                  <p className="evalText">
+                    녹화가 끝날 때까지, 20초간 스쿼트 동작을 반복해 주세요
+                  </p>
+                  <p className="evalTextSm">
+                    동작이나, 카메라와의 거리에 따라 계측이 되지 않을 수 있습니다
                   </p>
                 </div>
     } else if (this.state.recordState === 1) {
@@ -163,7 +169,7 @@ export default class App extends Component {
     return (
       <React.Fragment>
         <div className="app-container">
-          <div className="row" style={{ marginTop:'9vh'}}>
+          <div className="row" style={{ marginTop:'15vh'}}>
             <div className="col s6">
               <div className="center-align">
                 <canvas className="display" width="512" height="424" ref={this.display}></canvas>
